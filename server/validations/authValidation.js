@@ -17,10 +17,7 @@ export const registerValidation = (req, res, next) => {
     });
   }
 
-  return res.status(200).json({
-    message: "success validation",
-    success: true,
-  });
+  next();
 };
 
 export const loginValidation = (req, res, next) => {
@@ -39,8 +36,5 @@ export const loginValidation = (req, res, next) => {
     });
   }
 
-  return res.status(200).json({
-    message: "success validation",
-    success: true,
-  });
+  next();
 };

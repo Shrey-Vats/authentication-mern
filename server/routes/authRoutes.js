@@ -6,7 +6,6 @@ const authRouter = e.Router();
 
 authRouter.post("/register", registerValidation, registerController);
 authRouter.post("/login", loginValidation, loginController);
-authRouter.post("/logout", logoutController)
-
+authRouter.get("/logout", logoutController)
 
 export default authRouter;

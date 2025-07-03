@@ -2,6 +2,7 @@ import e from "express";
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
+const TOKEN_SECRET = process.env.TOKEN_SECRET || "q2Gj72jshS8@d!48sjdD12kdsA";
 
 export const registerController = async (req, res) => {
     try {
@@ -63,10 +64,11 @@ export const loginController = async (req, res) => {
             });
         }
 
+        console.log(TOKEN_SECRET);
     const token = jwt.sign(
-        {userId: user._id.toString(), email: user.email,},
-        process.env.TOKEN_SECRET,
-        {expiresIn: '2d'}
+      { userId: user._id.toString(), email: user.email },
+      TOKEN_SECRET,
+      { expiresIn: "2d" }
     );
 
         
@@ -85,13 +87,17 @@ export const loginController = async (req, res) => {
                 username: user.username,
                 email: user.email,
             },
+            token
     });
 
       } catch (error) {
+        console.log(error);
         return res.status(500).json({
             message: "Internal server error",
+            error: error,
             success: false,
         });
+       
       }
     }
 

@@ -1,15 +1,17 @@
 import e from "express";
-import User from "../models/user";
+import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 
 export const registerController = async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
+        console.log(username + email + password)
+
         const user = await User.findOne({ email });
 
         if (user) {
-          return res.status(400).json({
+          return res.status(401).json({
             message: "User already exists",
             success: false,
           });
@@ -25,6 +27,11 @@ export const registerController = async (req, res) => {
         });
 
         await newUser.save();
+
+        return res.status(200).json({
+            message: "success",
+            success: true
+        })
     } catch (error) {
         return res.status(500).json({
             message: "Internal server error",

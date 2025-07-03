@@ -1,6 +1,7 @@
 import e from "express";
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken'
 
 export const registerController = async (req, res) => {
     try {
@@ -54,6 +55,7 @@ export const loginController = async (req, res) => {
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
             return res.status(400).json({
                 message: "Invalid password",
@@ -61,7 +63,21 @@ export const loginController = async (req, res) => {
             });
         }
 
-        return res.status(200).json({
+    const token = jwt.sign(
+        {userId: user._id.toString(), email: user.email,},
+        process.env.TOKEN_SECRET,
+        {expiresIn: '2d'}
+    );
+
+        
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
             message: "Login successful",
             success: true,
             user: {
@@ -69,7 +85,7 @@ export const loginController = async (req, res) => {
                 username: user.username,
                 email: user.email,
             },
-        });
+    });
 
       } catch (error) {
         return res.status(500).json({
@@ -78,3 +94,5 @@ export const loginController = async (req, res) => {
         });
       }
     }
+
+    

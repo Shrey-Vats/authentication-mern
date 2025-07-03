@@ -2,6 +2,7 @@ import e from "express";
 import authRouter from "./routes/authRoutes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import userRouter from "./routes/userRoutes.js";
 
 const app = e();
 
@@ -15,5 +16,6 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/", authRouter)
+app.use("/app/", userRouter)
 
 export default app

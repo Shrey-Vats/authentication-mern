@@ -5,16 +5,17 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 
 export const LoginPage = () =>{
+  const navigation = useNavigate()
+
     const [user, setUser] = useState({
       email: "",
       password: "",
     });
     const [loading, setLoading] = useState(false)
-
     
     async function Login(e) {
       e.preventDefault();
@@ -24,13 +25,16 @@ export const LoginPage = () =>{
 
         const response = await axios.post(
           "http://localhost:5000/api/login",
-          user
+          user, {
+            withCredentials: true, 
+          }
         );
 
         setLoading(false)
         console.log("Response:", response.data);
-
         toast.success(response.data.message);
+        navigation('/profile')
+        
       } catch (error) {
         console.log(error);
         toast.error(error.message || "Something went wrong");

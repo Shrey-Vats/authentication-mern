@@ -7,15 +7,42 @@ import { FiLogOut } from "react-icons/fi";
 import React,{useEffect, useState} from "react";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
 
 export function ProfilePage() {
-const [isLoading, setIsLoading] = useState(false)
+  const navigation = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const [userData, setUserData] = useState("")
 
-  function logout() {
+  async function logout() {
+    try {
+      setIsLoading(true)
+      const response = await axios.get("http://localhost:5000/api/logout");
 
+      if(!response.data.success){
+        console.log(response.data.message)
+        toast.error(response.data.message)
+      }
+      navigation("/login")
+    } catch (error) {
+      console.log(error)
+      toast.success(error)
+    }
   }
 
+  async function userInformation(){
+    const user = await axios.get("http://localhost:5000/app/me");
+    setUserData(user.data.data)
+  }
+
+  useEffect(()=>{
+    userInformation()
+  }, [])
+
+  useEffect(() => {
+    console.log("User Data:", userData);
+  }, [userData]);
+  
   return (
     <div className="flex items-center justify-center h-full w-full bg-gray-300">
       <div className="flex w-[850px] h-[80%] bg-white rounded-lg shadow-lg">
@@ -52,12 +79,12 @@ const [isLoading, setIsLoading] = useState(false)
               <div className="flex items-center justify-center mt-10">
                 <FaUser className="h-12 w-12 p-3  border border-r-0 bg-gray-50 text-gray-600 rounded-l-xl" />
                 <p className="h-12 w-[200px] text-xl border border-l-0 rounded-r-xl px-4 py-2  flex">
-                  
+                  {userData.username}
                 </p>
               </div>
               <div className="flex items-center justify-center mt-2">
                 <MdEmail className="h-12 w-12 p-3  border border-r-0 bg-gray-50 text-gray-600 rounded-l-xl" />
-                <p className="h-12 w-[200px] text-xl border border-l-0 rounded-r-xl px-4 py-2  flex">
+                <p className="h-12 w-[200px] text-xl border border-l-0 rounded-r-xl px-4 py-2  flex">{userData.email}
                 </p>
               </div>
               <div className="flex items-center justify-center mt-2">

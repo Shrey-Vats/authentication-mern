@@ -1,6 +1,6 @@
 import e from "express";
-import { registerController, loginController } from "../controllers/authController";
-import { registerValidation, loginValidation } from "../validations/authValidation";
+import { registerController, loginController } from "../controllers/authController.js";
+import { registerValidation, loginValidation } from "../validations/authValidation.js";
 
 const authRouter = e.Router();
 

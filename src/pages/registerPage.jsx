@@ -5,6 +5,7 @@ import { FiMail } from "react-icons/fi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 export const RegisterPage = () =>{
     const [user, setUser] = useState({
@@ -108,7 +109,7 @@ export const RegisterPage = () =>{
             </button>
           </div>
           <span className="cursor-pointer text-blue-700 font-bold text-xl hover:underline mt-5 ">
-            Login Now
+            <Link to="/login">Login</Link>
           </span>
         </div>
       </div>

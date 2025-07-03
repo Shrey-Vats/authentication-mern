@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { FiUser } from "react-icons/fi";
 import { FiLock } from "react-icons/fi";
 import { FiMail } from "react-icons/fi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
+
+
 
 export const LoginPage = () =>{
     const [user, setUser] = useState({
@@ -28,7 +30,7 @@ export const LoginPage = () =>{
         setLoading(false)
         console.log("Response:", response.data);
 
-        toast.success("User created successfully");
+        toast.success(response.data.message);
       } catch (error) {
         console.log(error);
         toast.error(error.message || "Something went wrong");
@@ -95,7 +97,7 @@ export const LoginPage = () =>{
             </button>
           </div>
           <span className="cursor-pointer text-blue-700 font-bold text-xl hover:underline mt-5 ">
-            SignUp Now
+            <Link to="/register">Login</Link>
           </span>
         </div>
       </div>

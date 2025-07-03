@@ -95,4 +95,31 @@ export const loginController = async (req, res) => {
       }
     }
 
-    
+export const logoutController = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+
+        if (!token) {
+          return res.status(404).json({
+            message: "there is no token exit",
+            success: false,
+          });
+        }
+
+        res.clearCookie("token", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "Strict",
+        });
+
+        return res.status(200).json({
+          message: "logout successfuly",
+          success: true,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server error !!",
+            success: false
+        })
+    }
+}
